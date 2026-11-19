@@ -2,7 +2,6 @@
 
 Sweety is a full-stack blood glucose tracking application that helps users securely record, manage, and monitor their daily glucose readings. It provides a dashboard, reading history, charts, and reports to help users understand their glucose trends.
 
-Developed as part of the **Junior Full Stack Developer – JavaScript & AI assessment by Kenpath**.
 
 ## Features
 
