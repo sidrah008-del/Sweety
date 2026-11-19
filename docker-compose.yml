@@ -5,8 +5,10 @@ services:
     image: postgres:17-alpine
     container_name: sweety-db
     restart: unless-stopped
-    env_file:
-      - ./server/.env
+    environment:
+      POSTGRES_DB: ${DB_NAME:-sweety_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
