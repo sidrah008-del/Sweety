@@ -78,7 +78,7 @@ function Sidebar() {
       {/* Sidebar navigation */}
       <aside
         id="sweety-navigation"
-        className={`app-sidebar ${menuOpen ? "menu-open" : ""}`}
+       className={`app-sidebar ${menuOpen ? "menu-open" : ""}`}
       >
         <div className="app-sidebar-logo desktop-sidebar-logo">
           <div className="app-sidebar-logo-icon">S</div>
