@@ -235,25 +235,26 @@ Screenshots of the application interface will be added here.
 Developed as a full-stack web development project.
 
 
+
 ## Screenshots
 
 ### Login
-![Login Page](screenshots/Login.png)
+![Login Page](Screenshots/Login.png)
 
 ### Registration
-![Registration Page](screenshots/Register.png)
+![Registration Page](Screenshots/Register.png)
 
-### Overview
-![Overview Dashboard](screenshots/Overview.png)
+### Overview Dashboard
+![Overview Dashboard](Screenshots/Overview.png)
 
 ### Glucose Readings
-![Readings - View 1](screenshots/Reading1.png)
-![Readings - View 2](screenshots/Reading2.png)
+![Readings - View 1](Screenshots/Reading1.png)
+![Readings - View 2](Screenshots/Reading2.png)
 
 ### Reports & Analytics
-![Reports - View 1](screenshots/Report1.png)
-![Reports - View 2](screenshots/Report2.png)
-![Reports - View 3](screenshots/Report3.png)
+![Reports - View 1](Screenshots/Report1.png)
+![Reports - View 2](Screenshots/Report2.png)
+![Reports - View 3](Screenshots/Report3.png)
 
 ### Profile
-![Profile Page](screenshots/Profile.png)
+![Profile Page](Screenshots/Profile.png)
