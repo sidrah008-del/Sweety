@@ -1,65 +1,83 @@
 # Sweety – Blood Glucose Tracker
 
-Sweety is a full-stack blood glucose tracking application designed to help users record, monitor, and review their daily blood glucose readings through a simple and user-friendly interface.
+Sweety is a full-stack blood glucose tracking application that helps users securely record, manage, and monitor their daily glucose readings. It provides a dashboard, reading history, charts, and reports to help users understand their glucose trends.
 
-The application allows users to securely manage their accounts, record glucose readings, and view reports to better understand their tracking history.
+Developed as part of the **Junior Full Stack Developer – JavaScript & AI assessment by Kenpath**.
 
 ## Features
 
-- **User Authentication:** Secure user registration and login using password hashing and JWT authentication.
-- **Glucose Tracking:** Record daily blood glucose readings.
-- **Four Daily Slots:** Track up to four readings per day.
-- **Reading History:** View previously recorded glucose readings.
-- **Reports & Analytics:** Review glucose tracking data through reports and visual summaries.
-- **User Profile:** View and manage personal account details.
-- **Input Validation:** Validate glucose readings and prevent invalid entries.
-- **Responsive Design:** Access the application across desktop and mobile devices.
+### Authentication
+- User registration and login.
+- Password hashing using bcrypt.
+- JWT-based authentication.
+- Secure, user-specific reading access.
+
+### Blood Glucose Management
+- Add, view, edit, and delete glucose readings.
+- Four daily reading slots:
+  - Morning (fasting)
+  - After breakfast
+  - After lunch
+  - After dinner
+- Maximum of four readings per day.
+- Prevents duplicate readings for the same slot and date.
+- Validates glucose values and dates.
+
+### Dashboard and Reports
+- Dashboard summary with total readings, today's readings, and average glucose.
+- Glucose charts and reading history.
+- Daily reports.
+- Month-to-date reports.
+- Previous-month reports.
+- Pagination for reading history.
+- Empty states when no readings are available.
+
+### Additional Features
+- Docker and Docker Compose support.
+- PostgreSQL database seed script.
+- Automated end-to-end tests using Playwright.
 
 ## Technology Stack
 
-### Frontend
-- React.js
+**Frontend**
+- React
 - Vite
 - JavaScript
-- HTML5
-- CSS3
+- CSS
 - Axios
+- Recharts
 
-### Backend
+**Backend**
 - Node.js
 - Express.js
-- REST API
+- REST APIs
 
-### Database
+**Database**
 - PostgreSQL
 - pg (Node.js PostgreSQL client)
 
-### Authentication & Security
+**Authentication**
+- bcrypt
 - JSON Web Tokens (JWT)
-- bcrypt for password hashing
 
-### Testing
+**Tools and Testing**
+- Docker
+- Docker Compose
 - Playwright
-
-### Development Tools
-- Visual Studio Code
-- Git & GitHub
-- Postman
-
+- Git and GitHub
 
 ## Project Structure
 
 ```text
 Sweety/
-│
 ├── client/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
 │   │   ├── services/
 │   │   └── styles/
-│   ├── public/
-│   ├── .env.example
+│   ├── Dockerfile
+│   ├── nginx.conf
 │   └── package.json
 │
 ├── server/
@@ -67,34 +85,88 @@ Sweety/
 │   ├── controllers/
 │   ├── middleware/
 │   ├── routes/
+│   ├── seed.js
+│   ├── server.js
+│   ├── Dockerfile
 │   ├── .env.example
 │   └── package.json
 │
-├── .gitignore
+├── database/
+│   └── init.sql
+│
+├── tests/
+├── Screenshots/
+├── docker-compose.yml
 └── README.md
 ```
 
-## Installation & Setup
+## Installation and Setup
+
+### Prerequisites
+
+Install the following:
+
+- Node.js and npm
+- PostgreSQL
+- Git
+
+Docker Desktop is optional if you prefer running the application using Docker.
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/Sweety.git
+git clone https://github.com/sidrah008-del/Sweety.git
 cd Sweety
 ```
 
-### 2. Backend Setup
+### 2. Database Setup
+
+Create a PostgreSQL database named `sweety_db`.
+
+```sql
+CREATE DATABASE sweety_db;
+```
+
+Initialize the database tables using the provided SQL file:
+
+```bash
+psql -U postgres -d sweety_db -f database/init.sql
+```
+
+Make sure PostgreSQL is running and your database credentials are correct.
+
+### 3. Backend Setup
+
+Navigate to the server directory:
 
 ```bash
 cd server
 npm install
 ```
 
-Create a `.env` file inside the `server` folder using `.env.example` as a reference.
+Create a `.env` file using `.env.example` as a reference.
 
-Configure your PostgreSQL database credentials and JWT secret.
+On Windows PowerShell:
 
-Create a PostgreSQL database named `sweety_db` and ensure the required tables are set up.
+```powershell
+Copy-Item .env.example .env
+```
+
+Configure the environment variables:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=sweety_db
+DB_USER=postgres
+DB_PASSWORD=your_password
+
+PORT=5000
+
+JWT_SECRET=your_long_random_secret
+```
+
+Replace the database password and JWT secret with your own values.
 
 Start the backend:
 
@@ -102,24 +174,20 @@ Start the backend:
 npm start
 ```
 
-The backend runs on:
+The backend runs at:
 
-```text
-http://localhost:5000
-```
+`http://localhost:5000`
 
-### 3. Frontend Setup
+### 4. Frontend Setup
 
-Open a new terminal:
+Open another terminal from the project root:
 
 ```bash
 cd client
 npm install
 ```
 
-Create a `.env` file inside the `client` folder using `.env.example` as a reference.
-
-Add:
+Create a `.env` file in the client directory if required by your local configuration:
 
 ```env
 VITE_API_URL=http://localhost:5000
@@ -131,112 +199,108 @@ Start the frontend:
 npm run dev
 ```
 
-Open the local URL displayed in your terminal to access Sweety.
+Open the local URL displayed by Vite in your terminal.
 
+## Running with Docker
 
+Docker Compose starts the PostgreSQL database, Node.js backend, and React frontend.
 
-## API Documentation
+From the project root, make sure `server/.env` exists and contains the required database credentials and JWT secret.
 
-Base URL: `http://localhost:5000`
+Run:
 
-Protected endpoints require a valid JWT token in the Authorization header:
-
-```http
-Authorization: Bearer <your_token>
+```bash
+docker compose --env-file server/.env up -d --build
 ```
 
-### Authentication APIs
+The Docker configuration uses:
 
-| Method | Endpoint | Description | Authentication |
-|---|---|---|---|
-| POST | `/api/auth/register` | Register a new user | No |
-| POST | `/api/auth/login` | Log in an existing user | No |
+| Service | Address |
+|---|---|
+| Frontend | http://localhost:8080 |
+| Backend | http://localhost:5000 |
+| PostgreSQL (host port) | localhost:5433 |
 
-### Profile APIs
+Useful Docker commands:
 
-| Method | Endpoint | Description | Authentication |
-|---|---|---|---|
-| PUT | `/api/profile` | Update the logged-in user's profile | Yes |
+**Check running containers**
 
-### Glucose Reading APIs
+```bash
+docker compose ps
+```
 
-| Method | Endpoint | Description | Authentication |
-|---|---|---|---|
-| POST | `/api/readings` | Add a glucose reading | Yes |
-| GET | `/api/readings` | Get the user's readings | Yes |
-| PUT | `/api/readings/:id` | Update a glucose reading | Yes |
-| DELETE | `/api/readings/:id` | Delete a glucose reading | Yes |
+**View backend logs**
 
-### Reports APIs
+```bash
+docker compose logs server
+```
 
-| Method | Endpoint | Description | Authentication |
-|---|---|---|---|
-| GET | `/api/reports` | Get glucose reports | Yes |
-| GET | `/api/reports/trend` | Get glucose trends for the last 30 days | Yes |
+**Stop containers**
 
-## Database
+```bash
+docker compose down
+```
 
-Sweety uses PostgreSQL to store user accounts and glucose readings.
+The PostgreSQL data is stored in a Docker volume named `postgres_data`. Avoid using `docker compose down -v` if you want to preserve database data.
 
-### Main Tables
+## Demo Account and Database Seeding
 
-- **users:** Stores user account information, including name, email, and hashed password.
-- **readings:** Stores glucose readings associated with users, including date, time slot, and glucose value.
+Sweety includes a database seed script at:
 
-Each reading is linked to its respective user through a foreign key relationship.
+`server/seed.js`
 
+The script creates a demo user if one does not already exist and generates sample glucose readings for the previous seven days.
+
+It uses bcrypt to hash the demo password and avoids inserting duplicate readings.
+
+To execute the seed script with your local PostgreSQL database:
+
+```bash
+cd server
+node seed.js
+```
+
+### Demo Login Credentials
+
+| Field | Value |
+|---|---|
+| Name | Sweety Demo |
+| Email | demo@sweety.com |
+| Password | SweetyDemo@123 |
+
+The demo password applies when the seed script creates a new account. If the account already exists, the script preserves its existing password.
 
 ## Testing
 
-Sweety uses Playwright for end-to-end testing.
+Sweety uses Playwright for automated end-to-end testing.
 
-### Run Tests
-
-From the project directory, navigate to the client folder (or the folder containing your Playwright configuration).
-
-Install the required dependencies:
+Install the client dependencies first:
 
 ```bash
+cd client
 npm install
+npx playwright install chromium
 ```
 
-Install Playwright browsers:
+Start the backend and frontend before running the end-to-end tests.
 
-```bash
-npx playwright install
-```
-
-Run the test suite:
+From the project root, execute:
 
 ```bash
 npx playwright test
 ```
 
-View the HTML test report:
+To run tests with the browser visible:
 
 ```bash
-npx playwright show-report
+npx playwright test --headed
 ```
 
-The test suite covers authentication, glucose reading operations, API validation, and reports functionality.
+The test suite includes authentication and application workflow tests.
 
 ## Screenshots
 
-Screenshots of the application interface will be added here.
-
-## Future Improvements
-
-- Enhanced glucose analytics and insights.
-- Additional visualization options.
-- Improved health tracking features.
-
-## Author
-
-Developed as a full-stack web development project.
-
-
-
-## Screenshots
+Screenshots demonstrating the application are available in the `Screenshots` directory.
 
 ### Login
 ![Login Page](Screenshots/Login.png)
@@ -244,17 +308,58 @@ Developed as a full-stack web development project.
 ### Registration
 ![Registration Page](Screenshots/Register.png)
 
-### Overview Dashboard
-![Overview Dashboard](Screenshots/Overview.png)
+### Dashboard
+![Dashboard](Screenshots/Overview.png)
 
 ### Glucose Readings
 ![Readings - View 1](Screenshots/Reading1.png)
+
 ![Readings - View 2](Screenshots/Reading2.png)
 
-### Reports & Analytics
+### Reports and Analytics
 ![Reports - View 1](Screenshots/Report1.png)
+
 ![Reports - View 2](Screenshots/Report2.png)
+
 ![Reports - View 3](Screenshots/Report3.png)
 
 ### Profile
 ![Profile Page](Screenshots/Profile.png)
+
+## Environment Variables
+
+The backend environment variable template is provided in:
+
+`server/.env.example`
+
+Create your own `.env` file with the appropriate local database credentials and authentication secret.
+
+Never commit actual passwords, JWT secrets, or other private credentials to GitHub.
+
+## Notes and Future Improvements
+
+- PostgreSQL is used for persistent storage of user accounts and glucose readings.
+- Passwords are securely hashed using bcrypt.
+- JWT authentication protects user-specific reading data.
+- Database constraints and application-level validation help maintain data integrity.
+- Docker Compose simplifies local application setup.
+- Playwright provides automated end-to-end testing.
+
+With more development time, I would improve the application through:
+- More comprehensive frontend component testing.
+- Additional glucose analytics and visualization options.
+- Improved accessibility and responsive design.
+- Automated reading reminders.
+- Expanded test coverage and error handling.
+
+## Author
+
+**Sidrah Izrail**
+
+GitHub: [sidrah008-del](https://github.com/sidrah008-del)
+
+**Project Repository:** [Sweety – Blood Glucose Tracker](https://github.com/sidrah008-del/Sweety)
+
+---
+
+Built with React, Node.js, Express, and PostgreSQL.
