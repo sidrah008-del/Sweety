@@ -39,7 +39,7 @@ test.describe("Sweety Authentication Tests", () => {
       name: "Create account",
     }).click();
 
-    await expect(page.locator(".auth-error")).toBeVisible();
+    await expect(page.getByRole("alert")).toBeVisible();
   });
 
   test("3. Login with valid credentials", async ({ page }) => {
